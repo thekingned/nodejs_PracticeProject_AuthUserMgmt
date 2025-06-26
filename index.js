@@ -51,7 +51,7 @@ app.use("/friends", function auth(req, res, next) {
                 req.user = user;
                 next(); // Proceed to the next middleware
             } else {
-                return res.status(403).json({ message: "User not authenticated" });
+                return res.status(403).json({ message: "User not authenticated/session expired" });
             }
         });
     } else {
@@ -74,7 +74,7 @@ app.post("/login", (req, res) => {
         // Generate JWT access token
         let accessToken = jwt.sign({
             data: password
-        }, 'access', { expiresIn: 60 * 60 });
+        }, 'access', { expiresIn: 60 * 60 }); // Token valid for 1 hour
 
         // Store access token and username in session
         req.session.authorization = {
